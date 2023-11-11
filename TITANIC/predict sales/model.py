@@ -1,17 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.impute import SimpleImputer  # Import SimpleImputer
+from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 import pickle
+from sklearn.model_selection import cross_val_score
 
 dataset = pd.read_csv('train.csv')
 
-print(dataset.head())
-
-dataset=df = dataset.drop(columns=['PassengerId', 'Name','Ticket','Cabin','Age'])
-
+dataset=df = dataset.drop(columns=['PassengerId', 'Name','Ticket','Embarked'])
+dataset['Cabin'].fillna("None", inplace = True)
+dataset['Age'].fillna(dataset.groupby('Pclass')['Age'].transform('median'), inplace=True)
 x=dataset.loc[:, dataset.columns != "Survived"]
 x= pd.get_dummies(x)
 
@@ -19,10 +18,14 @@ y= dataset["Survived"]
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-lr= LinearRegression()
-lr.fit(X_train, y_train)
-print("Result train: {0:.2f}.".format(lr.score(X_train, y_train)))
-print("Result test: {0:.2f}.".format(lr.score(X_test, y_test)))
+rf = RandomForestClassifier(max_depth=10, max_leaf_nodes=None, min_samples_leaf=1, min_samples_split=2, n_estimators=50, max_features='sqrt', random_state=42)
+rf.fit(X_train, y_train)
+
+pickle.dump(rf, open('model.pkl','wb'))
+
+model = pickle.load(open('model.pkl','rb'))
+
+
 
 '''
 dataset['rate'].fillna(0, inplace=True)
