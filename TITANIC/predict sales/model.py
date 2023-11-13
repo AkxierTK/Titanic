@@ -8,12 +8,18 @@ from sklearn.model_selection import cross_val_score
 
 dataset = pd.read_csv('train.csv')
 
-dataset=df = dataset.drop(columns=['PassengerId', 'Name','Ticket','Embarked'])
-dataset['Cabin'].fillna("None", inplace = True)
+dataset=dataset.drop(columns=['PassengerId', 'Name','Ticket','Cabin'])
 dataset['Age'].fillna(dataset.groupby('Pclass')['Age'].transform('median'), inplace=True)
-x=dataset.loc[:, dataset.columns != "Survived"]
-x= pd.get_dummies(x)
+embarked_mapping = {'S': 0, 'C': 1, 'Q': 2}
+dataset['Embarked'] = dataset['Embarked'].map(embarked_mapping)
+dataset['Embarked'].fillna(dataset.groupby('Pclass')['Embarked'].transform('median'), inplace=True)
+sex_mapping = {'male': 0, 'female': 1}
+dataset['Sex'] = dataset['Sex'].map(sex_mapping)
 
+x=dataset.loc[:, dataset.columns != "Survived"]
+
+
+# Display columns with NaN values
 y= dataset["Survived"]
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
@@ -21,8 +27,9 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 rf = RandomForestClassifier(max_depth=10, max_leaf_nodes=None, min_samples_leaf=1, min_samples_split=2, n_estimators=50, max_features='sqrt', random_state=42)
 rf.fit(X_train, y_train)
 
-pickle.dump(rf, open('model.pkl','wb'))
 
+
+pickle.dump(rf, open('model.pkl','wb'))
 model = pickle.load(open('model.pkl','rb'))
 
 

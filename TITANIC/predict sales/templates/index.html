@@ -1,36 +1,83 @@
 <!DOCTYPE html>
-<html >
+
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Deployment Tutorial 1</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
 </head>
 
-<body style="background: #000;">
- <div class="login">
-	<h1>Sales Forecasting</h1>
+<body>
 
-     <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="rate" placeholder="rate" required="required" />
-        <input type="text" name="sales in first month" placeholder="sales in first month" required="required" />
-		<input type="text" name="sales in second month" placeholder="sales in second month" required="required" />
+    <div class="center">
+        <div class="form">
+            <form action="{{ url_for('predict')}}"method="post">
+                <div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="title">¡Predice si sobrevives! </div>
+                        <img src="../static/css/boat.png" style="width: 250px; position: absolute; left: 60%; top: -5%;">
+                    </div>
+                    <div class="subtitle"> {{ prediction_text }}</div>
+                    <div class="flex">
+                        <div>
+                            <div class="input-container ic1">
+                                <select class="input" name="clase" id="clase">
+                                    <option value="1" class="input">Primera</option>
+                                    <option value="2" class="input">Segunda</option>
+                                    <option value="3" class="input">Tercera</option>
+                                  </select>
+                                <div class="cut"></div>
+                                <label for="clase" class="placeholder">Clase</label>
+                            </div>
+                            <div class="input-container ic1">
+                                <select class="input" name="sexo" id="sexo">
+                                    <option value="1" class="input">Mujer</option>
+                                    <option value="0" class="input">Hombre</option>
+                                  </select>
+                                <div class="cut"></div>
+                                <label for="sexo" class="placeholder">Sexo</label>
+                            </div>
 
-
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict sales in third month</button>
-    </form>
-
-   <br>
-   <br>
-   {{ prediction_text }}
-
- </div>
-
-
+                            <div class="input-container ic1">
+                                <input id="edad" name="edad" class="input" type="number" placeholder=" " />
+                                <div class="cut"></div>
+                                <label for="edad" class="placeholder">Edad</label>
+                            </div>
+                            <div class="input-container ic1">
+                                <input id="pareja" name="pareja" class="input" type="number" placeholder=" " />
+                                <div class="cut"></div>
+                                <label for="pareja" class="placeholder">Hermanos/Pareja a Bordo</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-container ic1">
+                                <input id="hijos" name="hijos" class="input" type="number" placeholder=" " />
+                                <div class="cut"></div>
+                                <label for="hijos" class="placeholder">Padres/Hijos a Bordo</label>
+                            </div>
+                            <div class="input-container ic2">
+                                <input id="tarifa" name="tarifa" class="input" type="number" placeholder=" " />
+                                <div class="cut"></div>
+                                <label for="tarifa" class="placeholder">Tarifa</label>
+                            </div>
+                            <div class="input-container ic2">
+                                <select class="input" name="embarque" id="embarque">
+                                    <option value="0" class="input">Southampton</option>
+                                    <option value="1" class="input">Cherbourg</option>
+                                    <option value="2" class="input">Queenstown</option>
+                                  </select>
+                                <div class="cut cut-short"></div>
+                                <label for="embarque" class="placeholder">Puerto de embarque</label>
+                            </div>
+                            <button type="text" class="submit">Predecir</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <div class="ocean">
+        <div class="wave"></div>
+        <div class="wave wave2"></div>
+    </div>
 </body>
+
 </html>
